@@ -1,0 +1,32 @@
+﻿<object data="@pdfContent" style="width:100%; min-height: 300px; height: 100%;"></object>
+
+@code {
+    private string? pdfContent;
+
+    [Parameter]
+    public PDFModel? ComponentModel { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            base.OnInitialized();
+        }
+
+        {
+            if (ComponentModel?.Value is null || ComponentModel.Value.Length <= 0)
+            {
+                pdfContent = string.Empty;
+            }
+            else
+            {
+                pdfContent = "data:application/pdf;base64,";
+                pdfContent += System.Convert.ToBase64String(ComponentModel.Value);
+            }
+
+            StateHasChanged();
+        }
+    }
+
+    public static RenderFragment Create(PDFModel componentModel) => @<PDFRenderer ComponentModel=@componentModel />;
+}
