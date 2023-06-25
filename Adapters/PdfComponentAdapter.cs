@@ -2,18 +2,20 @@
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
+using ExpressApp.Blazor.Server.CustomEditors.Models;
+using ExpressApp.Blazor.Server.CustomEditors.Renderers;
 using Microsoft.AspNetCore.Components;
 
-namespace ExpressApp.Blazor.Server.Editors.PdfPropertyEditor;
+namespace ExpressApp.Blazor.Server.CustomEditors.Adapters;
 
-public class ComponentAdapter : ComponentAdapterBase
+public class PdfComponentAdapter : ComponentAdapterBase
 {
-    public ComponentAdapter(ComponentModel componentModel)
+    public PdfComponentAdapter(PdfComponentModel componentModel)
     {
         ComponentModel = componentModel ?? throw new ArgumentNullException(nameof(componentModel));
     }
 
-    public ComponentModel ComponentModel { get; }
+    public PdfComponentModel ComponentModel { get; }
 
     public override object GetValue()
     {
@@ -68,6 +70,6 @@ public class ComponentAdapter : ComponentAdapterBase
 
     protected override RenderFragment CreateComponent()
     {
-        return ComponentModelObserver.Create(ComponentModel, ComponentRenderer.Create(ComponentModel));
+        return ComponentModelObserver.Create(ComponentModel, PdfComponentRenderer.Create(ComponentModel));
     }
 }

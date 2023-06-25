@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpressApp.Blazor.Server.Editors.PdfPropertyEditor;
+namespace ExpressApp.Blazor.Server.CustomEditors.Models;
 
-public class ComponentModel : ComponentModelBase
+public class PdfComponentModel : ComponentModelBase
 {
     public byte[] Value
     {

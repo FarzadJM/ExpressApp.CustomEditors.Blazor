@@ -1,10 +1,12 @@
-﻿<object data="@pdfContent" style="width:100%; min-height: 300px; height: 100%;"></object>
+﻿@using ExpressApp.Blazor.Server.CustomEditors.Models;
+
+<object data="@pdfContent" style="width:100%; min-height: 300px; height: 100%;"></object>
 
 @code {
     private string? pdfContent;
 
     [Parameter]
-    public ComponentModel? ComponentModel { get; set; }
+    public PdfComponentModel? ComponentModel { get; set; }
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -28,5 +30,5 @@
         }
     }
 
-    public static RenderFragment Create(ComponentModel componentModel) => @<ComponentRenderer ComponentModel=@componentModel />;
+    public static RenderFragment Create(PdfComponentModel componentModel) => @<PdfComponentRenderer ComponentModel=@componentModel />;
 }
