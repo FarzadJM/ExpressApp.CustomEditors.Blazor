@@ -4,16 +4,16 @@ using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
 using Microsoft.AspNetCore.Components;
 
-namespace XAF_PDF_PropertyEditor;
+namespace ExpressApp.Blazor.Server.Editors.PdfPropertyEditor;
 
-public class PDFAdapter : ComponentAdapterBase
+public class ComponentAdapter : ComponentAdapterBase
 {
-    public PDFAdapter(PDFModel componentModel)
+    public ComponentAdapter(ComponentModel componentModel)
     {
         ComponentModel = componentModel ?? throw new ArgumentNullException(nameof(componentModel));
     }
 
-    public PDFModel ComponentModel { get; }
+    public ComponentModel ComponentModel { get; }
 
     public override object GetValue()
     {
@@ -68,6 +68,6 @@ public class PDFAdapter : ComponentAdapterBase
 
     protected override RenderFragment CreateComponent()
     {
-        return ComponentModelObserver.Create(ComponentModel, PDFRenderer.Create(ComponentModel));
+        return ComponentModelObserver.Create(ComponentModel, ComponentRenderer.Create(ComponentModel));
     }
 }

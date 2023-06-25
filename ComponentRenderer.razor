@@ -4,7 +4,7 @@
     private string? pdfContent;
 
     [Parameter]
-    public PDFModel? ComponentModel { get; set; }
+    public ComponentModel? ComponentModel { get; set; }
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -28,5 +28,5 @@
         }
     }
 
-    public static RenderFragment Create(PDFModel componentModel) => @<PDFRenderer ComponentModel=@componentModel />;
+    public static RenderFragment Create(ComponentModel componentModel) => @<ComponentRenderer ComponentModel=@componentModel />;
 }
