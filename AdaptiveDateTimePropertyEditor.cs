@@ -10,7 +10,7 @@ using DevExpress.Utils;
 using Microsoft.AspNetCore.Components;
 using System.Globalization;
 
-namespace ExpressApp.Blazor.Server.CustomEditors;
+namespace ExpressApp.Blazor.CustomEditors;
 
 public class AdaptiveDateTimePropertyEditor : StringPropertyEditor
 {

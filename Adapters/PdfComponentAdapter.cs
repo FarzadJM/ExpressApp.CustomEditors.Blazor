@@ -2,11 +2,11 @@
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
-using ExpressApp.Blazor.Server.CustomEditors.Models;
-using ExpressApp.Blazor.Server.CustomEditors.Renderers;
+using ExpressApp.Blazor.CustomEditors.Models;
+using ExpressApp.Blazor.CustomEditors.Renderers;
 using Microsoft.AspNetCore.Components;
 
-namespace ExpressApp.Blazor.Server.CustomEditors.Adapters;
+namespace ExpressApp.Blazor.CustomEditors.Adapters;
 
 public class PdfComponentAdapter : ComponentAdapterBase
 {

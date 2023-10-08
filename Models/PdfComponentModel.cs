@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpressApp.Blazor.Server.CustomEditors.Models;
+namespace ExpressApp.Blazor.CustomEditors.Models;
 
 public class PdfComponentModel : ComponentModelBase
 {

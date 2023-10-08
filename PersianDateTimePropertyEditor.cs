@@ -7,7 +7,7 @@ using DevExpress.Utils;
 using System;
 using System.Globalization;
 
-namespace ExpressApp.Blazor.Server.CustomEditors;
+namespace ExpressApp.Blazor.CustomEditors;
 
 public class PersianDateTimePropertyEditor : StringPropertyEditor
 {
