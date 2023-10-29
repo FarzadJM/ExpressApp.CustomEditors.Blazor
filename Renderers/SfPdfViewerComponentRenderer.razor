@@ -1,0 +1,99 @@
+﻿@using ExpressApp.Blazor.CustomEditors.Models;
+@using Syncfusion.Blazor;
+@using Syncfusion.Blazor.PdfViewer;
+@using Syncfusion.Blazor.PdfViewerServer;
+
+<DevExpress.Blazor.DxButton Click="Changed">Sync</DevExpress.Blazor.DxButton>
+
+<SfPdfViewerServer @ref="pdfViewer"
+                   DocumentPath="@DocumentPath"
+                   ToolbarSettings="@ToolbarSettings"
+                   Height="500px"
+                   EnableHandwrittenSignature="false"
+                   IsSignatureEditable="false"
+                   ShowDigitalSignatureAppearance="false"
+                   Width="100%"
+                   style="margin-top: 10px">
+</SfPdfViewerServer>
+
+@code {
+    private SfPdfViewerServer? pdfViewer;
+    private string? DocumentPath { get; set; }
+
+    public PdfViewerToolbarSettings ToolbarSettings
+    {
+        get
+        {
+            var a = new PdfViewerToolbarSettings();
+            a.ToolbarItems = new List<ToolbarItem>();
+            a.ToolbarItems.Add(ToolbarItem.PageNavigationTool);
+            a.ToolbarItems.Add(ToolbarItem.MagnificationTool);
+            a.ToolbarItems.Add(ToolbarItem.SelectionTool);
+            a.ToolbarItems.Add(ToolbarItem.PanTool);
+            a.ToolbarItems.Add(ToolbarItem.UndoRedoTool);
+            a.ToolbarItems.Add(ToolbarItem.SearchOption);
+            a.ToolbarItems.Add(ToolbarItem.PrintOption);
+            a.ToolbarItems.Add(ToolbarItem.DownloadOption);
+
+            return a;
+        }
+    }
+
+    [Parameter]
+    public SfPdfViewerComponentModel? ComponentModel { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            base.OnInitialized();
+        }
+
+        if (ComponentModel?.Value is null || ComponentModel.Value.Length <= 0)
+        {
+            if (DocumentPath != string.Empty)
+            {
+                DocumentPath = string.Empty;
+                StateHasChanged();
+            }
+        }
+        else
+        {
+            if (DocumentPath != ComponentModel.DocumentPath)
+            {
+                DocumentPath = ComponentModel.DocumentPath;
+                StateHasChanged();
+            }
+        }
+    }
+
+    //private byte[] GetDocument()
+    //{
+    //    if (pdfViewer is not null)
+    //    {
+    //        var a = pdfViewer.GetDocumentAsync();
+    //        a.RunSynchronously();
+    //        return a.Result;
+    //    }
+    //    else
+    //    {
+    //        return Array.Empty<byte>();
+    //    }
+    //}
+
+    private void Changed()
+    {
+        //ComponentModel.ValueChanged?.Invoke(this, EventArgs.Empty);
+
+        //if (pdfViewer is not null && ComponentModel is not null)
+        //{
+        //    Task.Run(async () =>
+        //{
+        //    var a = await pdfViewer.ExportFormFieldsAsObjectAsync();
+        //    ComponentModel.SetValueFromUI(a);
+        //});
+        //}
+    }
+
+    public static RenderFragment Create(SfPdfViewerComponentModel componentModel) => @<SfPdfViewerComponentRenderer ComponentModel=@componentModel />;
+}

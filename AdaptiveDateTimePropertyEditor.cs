@@ -67,12 +67,10 @@ public class AdaptiveDateTimePropertyEditor : StringPropertyEditor
 
 public class AutoDateTimeMaskedInputAdapter<T> : DxMaskedInputAdapter<T>
 {
-    private readonly DxMaskedInputModel<T> componentModel;
     private object lastValidValue;
 
     public AutoDateTimeMaskedInputAdapter(DxMaskedInputModel<T> componentModel) : base(componentModel)
     {
-        this.componentModel = componentModel;
     }
 
     public override object GetValue()

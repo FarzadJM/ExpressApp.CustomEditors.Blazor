@@ -15,19 +15,22 @@
             base.OnInitialized();
         }
 
+        if (ComponentModel?.Value is null || ComponentModel.Value.Length <= 0)
         {
-            if (ComponentModel?.Value is null || ComponentModel.Value.Length <= 0)
-            {
-                pdfContent = string.Empty;
-            }
-            else
-            {
-                pdfContent = "data:application/pdf;base64,";
-                pdfContent += System.Convert.ToBase64String(ComponentModel.Value);
-            }
-
+            pdfContent = string.Empty;
             StateHasChanged();
         }
+        else
+        {
+            var newContent = "data:application/pdf;base64," + System.Convert.ToBase64String(ComponentModel.Value);
+
+            if (pdfContent != newContent)
+            {
+                pdfContent = newContent;
+                StateHasChanged();
+            }
+        }
+
     }
 
     public static RenderFragment Create(PdfComponentModel componentModel) => @<PdfComponentRenderer ComponentModel=@componentModel />;

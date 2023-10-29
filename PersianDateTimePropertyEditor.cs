@@ -1,4 +1,5 @@
-﻿using DevExpress.ExpressApp.Blazor.Components.Models;
+﻿using DevExpress.Data.Mask.Internal;
+using DevExpress.ExpressApp.Blazor.Components.Models;
 using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Editors;
@@ -29,7 +30,7 @@ public class PersianDateTimePropertyEditor : StringPropertyEditor
 
 public class PerisanDateTimeMaskedInputAdapter<T> : DxMaskedInputAdapter<T>
 {
-    private DateTime? lastValidValue;
+    private object lastValidValue;
 
     public PerisanDateTimeMaskedInputAdapter(DxMaskedInputModel<T> componentModel) : base(componentModel)
     {
@@ -40,40 +41,34 @@ public class PerisanDateTimeMaskedInputAdapter<T> : DxMaskedInputAdapter<T>
     {
         if (ComponentModel.Value is string value)
         {
-            if (GetDate(value).HasValue)
+            if (System.DateTime.TryParse(value, CultureInfo.GetCultureInfo("fa"), DateTimeStyles.AssumeLocal, out System.DateTime dateTime))
             {
-                return value;
+                return dateTime;
             }
             else
             {
-                var s = CultureInfo.CurrentCulture.GetDateSeparator();
-
-                if (lastValidValue.HasValue)
-                {
-                    SetValue(lastValidValue.Value.AddDays(1).ToString(@$"yyyy{s}M{s}d", CultureInfo.GetCultureInfo("fa")));
-                }
-                else
-                {
-                    SetValue(DateTime.Now.ToString(@$"yyyy{s}M{s}d", CultureInfo.GetCultureInfo("fa")));
-                }
+                return lastValidValue;
             }
         }
 
-        return null;
+        return new PersianCalendar().MinSupportedDateTime;
     }
 
     public override void SetValue(object value)
     {
-        if (value is string valueStr)
+        if (value is System.DateTime dateTime)
         {
-            var datetime = GetDate(valueStr);
+            lastValidValue = dateTime;
+            var s = CultureInfo.CurrentCulture.GetDateSeparator();
 
-            if (datetime.HasValue)
+            try
             {
-                lastValidValue = datetime.Value;
+                ComponentModel.Value = (T)(object)dateTime.ToString(@$"yyyy{s}M{s}d", CultureInfo.GetCultureInfo("fa"));
             }
-
-            ComponentModel.Value = (T)value;
+            catch (Exception)
+            {
+                ComponentModel.Value = (T)(object)string.Empty;
+            }
         }
     }
 

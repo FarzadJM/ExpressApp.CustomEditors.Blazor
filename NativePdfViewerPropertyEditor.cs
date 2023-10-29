@@ -6,8 +6,8 @@ using ExpressApp.Blazor.CustomEditors.Models;
 
 namespace ExpressApp.Blazor.CustomEditors;
 
-public class PdfPropertyEditor : BlazorPropertyEditorBase
+public class NativePdfViewerPropertyEditor : BlazorPropertyEditorBase
 {
-    public PdfPropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model) { }
+    public NativePdfViewerPropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model) { }
     protected override IComponentAdapter CreateComponentAdapter() => new PdfComponentAdapter(new PdfComponentModel());
 }
