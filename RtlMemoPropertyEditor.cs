@@ -2,7 +2,7 @@
 using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Model;
-using ExpressApp.Blazor.CustomEditors.Adapters;
+using ExpressApp.Blazor.CustomEditors.RtlMemo;
 
 namespace ExpressApp.Blazor.CustomEditors;
 

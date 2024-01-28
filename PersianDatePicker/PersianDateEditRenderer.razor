@@ -1,0 +1,429 @@
+﻿@using DevExpress.Blazor
+@using System.Globalization
+@using DevExpress.ExpressApp.Blazor.Components.Models
+@typeparam T
+
+<DxTextBox @ref="dxTextBox"
+           ClearButtonDisplayMode="ComponentModel.ClearButtonDisplayMode"
+           @bind-Text="DxTextBoxText"
+           ShowValidationIcon="@ComponentModel.ShowValidationIcon"
+           Attributes="@ComponentModel.Attributes.ToDictionary()"
+           CssClass="@ComponentModel.CssClass"
+           Enabled="@ComponentModel.Enabled"
+           NullText="@ComponentModel.NullText"
+           BindValueMode="BindValueMode.OnLostFocus"
+           InputCssClass="@(System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "fa" ? "persian-date-picker-input-fa":"persian-date-picker-input-en")"
+           ReadOnly="@ComponentModel.ReadOnly">
+    <Buttons>
+        <DxEditorButton Enabled="@(ComponentModel.Enabled && !ComponentModel.ReadOnly)" IconCssClass="dxbl-btn-icon dxbl-image editor-icon editor-icon-add" Tooltip="نمایش تقویم" Click="(x) => OpenClose()" />
+    </Buttons>
+</DxTextBox>
+
+<DxDropDown @bind-IsOpen="IsOpen"
+            CssClass="persian-date-picker"
+            HeaderVisible="true"
+            FooterVisible="true"
+            PositionMode="DropDownPositionMode.Bottom"
+            CloseOnOutsideClick="true"
+            VerticalOffset="1"
+            PositionTarget="@($"#{dxTextBox?.Id}")"
+            CloseMode="DropDownCloseMode.Close"
+            FitToRestriction="true">
+    <HeaderContentTemplate>
+        <dxbl-calendar class="dxbl-calendar dxbl-date-time-edit-calendar">
+            <div class="dxbl-calendar-header">
+                <button class="dxbl-btn dxbl-btn-text-secondary dxbl-btn-tool dxbl-calendar-header-previous-year-btn" aria-label="Previous Year" type="button" onclick="@PreviousYearButton_Clicked">
+                    <svg class="dxbl-image" aria-hidden="true" focusable="false">
+                        <use href="_content/DevExpress.Blazor/dx-blazor-3192a3170e.svg#dx-chevron-double-right" />
+                    </svg>
+                </button>
+                <button class="dxbl-btn dxbl-btn-text-secondary dxbl-btn-tool dxbl-calendar-header-previous-month-btn" aria-label="Previous Month" type="button" onclick="@PreviousMonthButton_Clicked">
+                    <svg class="dxbl-image" aria-hidden="true" focusable="false">
+                        <use href="_content/DevExpress.Blazor/dx-blazor-3192a3170e.svg#dx-chevron-right"></use>
+                    </svg>
+                </button>
+                <button class="dxbl-btn dxbl-btn-text-secondary dxbl-btn-tool dxbl-calendar-header-title-btn">
+                    <span class="dxbl-btn-caption">@HeaderTitle</span>
+                </button>
+                <button class="dxbl-btn dxbl-btn-text-secondary dxbl-btn-tool dxbl-calendar-header-next-month-btn" aria-label="Next Month" type="button" onclick="@NextMonthButton_Clicked">
+                    <svg class="dxbl-image" aria-hidden="true" focusable="false">
+                        <use href="_content/DevExpress.Blazor/dx-blazor-3192a3170e.svg#dx-chevron-left"></use>
+                    </svg>
+                </button>
+                <button class="dxbl-btn dxbl-btn-text-secondary dxbl-btn-tool dxbl-calendar-header-next-year-btn" aria-label="Next Year" type="button" onclick="@NextYearButton_Clicked">
+                    <svg class="dxbl-image" aria-hidden="true" focusable="false">
+                        <use href="_content/DevExpress.Blazor/dx-blazor-3192a3170e.svg#dx-chevron-double-left" />
+                    </svg>
+                </button>
+            </div>
+        </dxbl-calendar>
+    </HeaderContentTemplate>
+    <BodyContentTemplate>
+        <dxbl-calendar class="dxbl-calendar">
+            <dxbl-calendar-table-container class="dxbl-calendar-content" view="0" view-date="1704758400000" data-qa-dxbl-loaded="">
+                <table style="width: 254.859px; height: 203.609px;">
+                    <tbody>
+                        <tr class="dxbl-calendar-days-of-week">
+                            <td></td>
+                            <th>شنبه</th>
+                            <th>یکشنبه</th>
+                            <th>دوشنبه</th>
+                            <th>سه‌شنبه</th>
+                            <th>چهارشنبه</th>
+                            <th>پنجشنبه</th>
+                            <th>جمعه</th>
+                        </tr>
+                        @for (int rowIndex = 0; rowIndex < 6; rowIndex++)
+                        {
+                            <tr class="dxbl-calendar-week-row">
+                                <td class="dxbl-calendar-week-number">
+                                    @GetWeekOfYear(rowIndex)
+                                </td>
+                                @for (int colIndex = 0; colIndex < 7; colIndex++)
+                                {
+                                    var cellDate = GetCellDate(rowIndex, colIndex);
+                                    <td onclick="@(() => {DateSelectedFromPicker(cellDate);})" class="dxbl-calendar-day @GetSelectedDateClass(rowIndex, colIndex) @GetTodayClass(rowIndex, colIndex) @GetWeekendClass(rowIndex, colIndex) @GetNotCurrentMonthClass(rowIndex, colIndex)">
+                                        <a>
+                                            @(new PersianCalendar().GetDayOfMonth(GetCellDate(rowIndex, colIndex)))
+                                        </a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </dxbl-calendar-table-container>
+        </dxbl-calendar>
+    </BodyContentTemplate>
+    <FooterContentTemplate>
+        <div class="dxbl-calendar">
+            <div class="dxbl-calendar-footer">
+                <button class="dxbl-btn dxbl-btn-secondary" type="button" onclick="@TodayButton_Clicked">
+                    <span class="dxbl-btn-caption">امروز</span>
+                </button>
+                @if (ComponentModel.ClearButtonDisplayMode == DataEditorClearButtonDisplayMode.Auto && !string.IsNullOrWhiteSpace(DxTextBoxText))
+                {
+                    <button class="dxbl-btn dxbl-btn-secondary" type="button" onclick="@ClearButton_Clicked">
+                        <span class="dxbl-btn-caption">پاک کردن</span>
+                    </button>
+                }
+            </div>
+        </div>
+    </FooterContentTemplate>
+</DxDropDown>
+
+<style>
+    .persian-date-picker-input-fa {
+        direction: ltr;
+        text-align: right;
+    }
+
+    .persian-date-picker-input-en {
+        direction: ltr;
+        text-align: left;
+    }
+
+    .persian-date-picker {
+        direction: rtl;
+    }
+
+        .persian-date-picker .dxbl-dropdown-body {
+            padding: 0 !important;
+        }
+
+        .persian-date-picker .dxbl-calendar {
+            border: none;
+        }
+
+        .persian-date-picker .dxbl-dropdown-header {
+            padding: 0 !important;
+        }
+
+            .persian-date-picker .dxbl-dropdown-header .dxbl-calendar {
+                width: 100%;
+                height: 100%;
+            }
+
+            .persian-date-picker .dxbl-dropdown-header .dxbl-calendar-header {
+                border: none;
+            }
+
+        .persian-date-picker .dxbl-dropdown-footer {
+            padding: 0 !important;
+        }
+
+            .persian-date-picker .dxbl-dropdown-footer .dxbl-calendar {
+                width: 100%;
+                height: 100%;
+            }
+
+            .persian-date-picker .dxbl-dropdown-footer .dxbl-calendar-footer {
+                border: none;
+            }
+
+                .persian-date-picker .dxbl-dropdown-footer .dxbl-calendar-footer .dxbl-btn + .dxbl-btn {
+                    margin-left: 0;
+                    margin-right: var(--dxbl-calendar-footer-btn-spacing);
+                }
+
+    .editor-icon-add {
+        mask-image: url("_content/ExpressApp.Blazor.CustomEditors/calendar-number.svg");
+    }
+
+    .editor-icon, .dxbl-btn .editor-icon {
+        width: 1rem;
+        height: 1rem;
+        background-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        background-position: center center;
+        background-color: currentColor;
+        opacity: 0.7;
+    }
+</style>
+
+@code {
+    private DxTextBox? dxTextBox;
+    private bool isOpen;
+    private DateTime calendarDate;
+    private string dropDownId = $"id{Guid.NewGuid().ToString()}";
+    private string dxTextBoxText = string.Empty;
+
+    [Parameter]
+    public DxDateEditModel<T> ComponentModel { get; set; }
+
+    private string HeaderTitle => CalendarDate.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("fa"));
+
+    private string GetWeekOfYear(int rowIndex)
+    {
+        return new PersianCalendar().GetWeekOfYear(GetCellDate(rowIndex, 6), CalendarWeekRule.FirstDay, DayOfWeek.Saturday).ToString("00");
+    }
+
+    private string GetNotCurrentMonthClass(int rowIndex, int colIndex)
+    {
+        return new PersianCalendar().GetMonth(GetCellDate(rowIndex, colIndex)) != new PersianCalendar().GetMonth(CalendarDate) ? "dxbl-calendar-not-current-view" : string.Empty;
+    }
+
+    private string GetWeekendClass(int rowIndex, int colIndex)
+    {
+        return GetCellDate(rowIndex, colIndex).DayOfWeek == DayOfWeek.Friday ? "dxbl-calendar-weekend" : string.Empty;
+    }
+
+    private string GetTodayClass(int rowIndex, int colIndex)
+    {
+        return GetCellDate(rowIndex, colIndex).Date == DateTime.Now.Date ? "dxbl-calendar-today" : string.Empty;
+    }
+
+    private string GetSelectedDateClass(int rowIndex, int colIndex)
+    {
+        return GetCellDate(rowIndex, colIndex).Date == calendarDate.Date ? "dxbl-calendar-selected-item" : string.Empty;
+    }
+
+    public string DxTextBoxText
+    {
+        get
+        {
+            if (ComponentModel is DxDateEditModel<DateTime> model)
+            {
+                if (IsValidDate(model.Date))
+                {
+                    var value = string.Format(CultureInfo.GetCultureInfo("fa"), ComponentModel.DisplayFormat, model.Date) ?? string.Empty;
+
+                    if (dxTextBoxText != value)
+                    {
+                        dxTextBoxText = value;
+
+                        CalendarDate = model.Date;
+                    }
+
+                    return dxTextBoxText;
+                }
+            }
+            else if (ComponentModel is DxDateEditModel<DateTime?> modelNullable)
+            {
+                if (IsValidDate(modelNullable.Date))
+                {
+                    var value = string.Format(CultureInfo.GetCultureInfo("fa"), ComponentModel.DisplayFormat, modelNullable.Date) ?? string.Empty;
+
+                    if (dxTextBoxText != value)
+                    {
+                        dxTextBoxText = value;
+
+                        CalendarDate = modelNullable.Date ?? DateTime.Now;
+                    }
+
+                    return dxTextBoxText;
+                }
+            }
+
+            return string.Empty;
+        }
+        set
+        {
+            if (DateTime.TryParse(value, CultureInfo.GetCultureInfo("fa"), DateTimeStyles.AssumeLocal, out DateTime dateTime))
+            {
+                CalendarDate = dateTime;
+
+                if (dateTime is T newValue)
+                {
+                    dxTextBoxText = value;
+                    ComponentModel.DateChanged.InvokeAsync(newValue);
+                }
+            }
+            else
+            {
+                dxTextBoxText = string.Empty;
+                ComponentModel.DateChanged.InvokeAsync();
+            }
+        }
+    }
+
+    public DateTime? DxTextBoxDateTime
+    {
+        get
+        {
+            if (DateTime.TryParse(DxTextBoxText, CultureInfo.GetCultureInfo("fa"), DateTimeStyles.AssumeLocal, out DateTime dateTime))
+            {
+                return dateTime;
+            }
+
+            return null;
+        }
+        set
+        {
+            DxTextBoxText = string.Format(CultureInfo.GetCultureInfo("fa"), ComponentModel.DisplayFormat, value) ?? string.Empty;
+        }
+    }
+
+    public DateTime CalendarDate
+    {
+        get
+        {
+            return calendarDate;
+        }
+        set
+        {
+            if (calendarDate != value)
+            {
+                calendarDate = value;
+
+                StateHasChanged();
+            }
+        }
+    }
+
+    public bool IsOpen
+    {
+        get
+        {
+            return isOpen;
+        }
+        set
+        {
+            if (isOpen != value)
+            {
+                isOpen = value;
+
+                if (isOpen)
+                {
+                    CalendarDate = DxTextBoxDateTime ?? DateTime.Now;
+
+                    StateHasChanged();
+                }
+            }
+        }
+    }
+
+    private DateTime GetCellDate(int rowIndex, int colIndex)
+    {
+        var cellIndex = colIndex + (rowIndex * 7);
+        var c = new PersianCalendar();
+        var b = new DateTime(c.GetYear(CalendarDate), c.GetMonth(CalendarDate), 1, new PersianCalendar());
+
+        switch (b.DayOfWeek)
+        {
+            case DayOfWeek.Saturday:
+                b = b.AddDays(0);
+                break;
+            case DayOfWeek.Sunday:
+                b = b.AddDays(-1);
+                break;
+            case DayOfWeek.Monday:
+                b = b.AddDays(-2);
+                break;
+            case DayOfWeek.Tuesday:
+                b = b.AddDays(-3);
+                break;
+            case DayOfWeek.Wednesday:
+                b = b.AddDays(-4);
+                break;
+            case DayOfWeek.Thursday:
+                b = b.AddDays(-5);
+                break;
+            case DayOfWeek.Friday:
+                b = b.AddDays(-6);
+                break;
+        }
+
+        return b.AddDays(cellIndex);
+    }
+
+    private void TodayButton_Clicked()
+    {
+        DateSelectedFromPicker(DateTime.Now);
+    }
+
+    private void ClearButton_Clicked()
+    {
+        DateSelectedFromPicker(null);
+    }
+
+    private void NextMonthButton_Clicked()
+    {
+        CalendarDate = new PersianCalendar().AddMonths(CalendarDate, 1);
+    }
+
+    private void PreviousMonthButton_Clicked()
+    {
+        CalendarDate = new PersianCalendar().AddMonths(CalendarDate, -1);
+    }
+
+    private void PreviousYearButton_Clicked()
+    {
+        CalendarDate = new PersianCalendar().AddYears(CalendarDate, -1);
+    }
+
+    private void NextYearButton_Clicked()
+    {
+        CalendarDate = new PersianCalendar().AddYears(CalendarDate, 1);
+    }
+
+    private void DateSelectedFromPicker(DateTime? value)
+    {
+        if (IsValidDate(value))
+        {
+            CalendarDate = value ?? DateTime.Now.Date;
+
+            DxTextBoxDateTime = value is null ? null : new DateTime(DateOnly.FromDateTime(value.Value), TimeOnly.FromDateTime(DxTextBoxDateTime ?? value.Value.Date));
+
+            OpenClose();
+        }
+    }
+
+    private bool IsValidDate(DateTime? value)
+    {
+        return value is null || (new PersianCalendar().MinSupportedDateTime <= value && value <= new PersianCalendar().MaxSupportedDateTime);
+    }
+
+    private void OpenClose()
+    {
+        if (dxTextBox is not null)
+        {
+            IsOpen = !IsOpen;
+        }
+
+        StateHasChanged();
+    }
+
+    public static RenderFragment Create(DxDateEditModel<T> componentModel) => @<PersianDateEditRenderer ComponentModel=@componentModel />;
+}

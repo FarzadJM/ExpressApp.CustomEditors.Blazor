@@ -1,7 +1,7 @@
 ﻿using DevExpress.ExpressApp.Blazor.Components.Models;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 
-namespace ExpressApp.Blazor.CustomEditors.Adapters;
+namespace ExpressApp.Blazor.CustomEditors.RtlMemo;
 
 public class DxMemoAdapterCustom : DxMemoAdapter
 {
@@ -35,6 +35,7 @@ public class DxMemoAdapterCustom : DxMemoAdapter
                 value = $"‫{valueStr}";
             }
         }
+        else value ??= "‫";
 
         base.SetValue(value);
     }

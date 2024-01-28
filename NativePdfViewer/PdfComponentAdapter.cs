@@ -1,29 +1,26 @@
 ﻿using DevExpress.ExpressApp.Blazor.Components;
+using DevExpress.ExpressApp.Blazor.Components.Models;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
-using ExpressApp.Blazor.CustomEditors.Models;
-using ExpressApp.Blazor.CustomEditors.Renderers;
 using Microsoft.AspNetCore.Components;
-using System;
 
-namespace ExpressApp.Blazor.CustomEditors.Adapters;
+namespace ExpressApp.Blazor.CustomEditors.NativePdfViewer;
 
-public class SfPdfViewerComponentAdapter : ComponentAdapterBase
+public class PdfComponentAdapter : ComponentAdapterBase
 {
-    public SfPdfViewerComponentAdapter(SfPdfViewerComponentModel componentModel)
+    public PdfComponentAdapter(PdfComponentModel componentModel)
     {
-        ComponentModel = componentModel ?? throw new ArgumentNullException(nameof(componentModel));
-        ComponentModel.ValueChanged += ComponentModel_ValueChanged;
+        ComponentModelPdf = componentModel ?? throw new ArgumentNullException(nameof(componentModel));
     }
 
-    private void ComponentModel_ValueChanged(object sender, EventArgs e) => RaiseValueChanged();
+    public PdfComponentModel ComponentModelPdf { get; }
 
-    public SfPdfViewerComponentModel ComponentModel { get; }
+    public override IComponentModel ComponentModel => ComponentModelPdf;
 
     public override object GetValue()
     {
-        return ComponentModel.Value;
+        return new object();
     }
 
     public override void SetAllowEdit(bool allowEdit)
@@ -69,11 +66,11 @@ public class SfPdfViewerComponentAdapter : ComponentAdapterBase
 
     public override void SetValue(object value)
     {
-        ComponentModel.Value = (byte[])value ?? Array.Empty<byte>();
+        ComponentModelPdf.Value = (byte[])value ?? Array.Empty<byte>();
     }
 
     protected override RenderFragment CreateComponent()
     {
-        return ComponentModelObserver.Create(ComponentModel, SfPdfViewerComponentRenderer.Create(ComponentModel));
+        return ComponentModelObserver.Create(ComponentModelPdf, PdfComponentRenderer.Create(ComponentModelPdf));
     }
 }
