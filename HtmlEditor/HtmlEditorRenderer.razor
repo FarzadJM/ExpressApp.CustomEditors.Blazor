@@ -1,0 +1,44 @@
+﻿@implements IDisposable
+
+<HtmlEditorComponent @ref="htmlEditorComponent"
+                     Value="@ComponentModel.Value"
+                     AllowEdit="@ComponentModel.AllowEdit"
+                     ValueChanged="@ComponentModel.ValueChanged"></HtmlEditorComponent>
+
+@code {
+    private HtmlEditorComponent htmlEditorComponent;
+
+    [Parameter]
+    public HtmlEditorModel ComponentModel { get; set; }
+
+    public static RenderFragment Create(HtmlEditorModel componentModel) => @<HtmlEditorRenderer ComponentModel=@componentModel />;
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if (ComponentModel is not null)
+        {
+            ComponentModel.RefreshRequested -= ComponentModel_RefreshRequested;
+            ComponentModel.AllowEditValueChanged -= ComponentModel_AllowEditValueChanged;
+        }
+
+        return base.SetParametersAsync(parameters);
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        ComponentModel.RefreshRequested += ComponentModel_RefreshRequested;
+        ComponentModel.AllowEditValueChanged += ComponentModel_AllowEditValueChanged;
+    }
+
+    protected void ComponentModel_RefreshRequested(object sender, EventArgs e) => htmlEditorComponent?.Refresh();
+
+    protected void ComponentModel_AllowEditValueChanged(object sender, bool e) => htmlEditorComponent?.AllowEditChanged(e);
+
+    void IDisposable.Dispose()
+    {
+        ComponentModel.RefreshRequested -= ComponentModel_RefreshRequested;
+        ComponentModel.AllowEditValueChanged -= ComponentModel_AllowEditValueChanged;
+    }
+}

@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+
+<div @ref="htmlEditorElement"></div>
+
+@code {
+    private bool ResourcesLoaded { get; set; }
+    private ElementReference htmlEditorElement;
+    private DotNetObjectReference<HtmlEditorComponent>? dotNetHelper;
+    private IJSObjectReference? htmlEditorModule;
+    private IJSObjectReference? htmlEditor;
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+    [Parameter]
+    public string Value { get; set; } = string.Empty;
+    [Parameter]
+    public bool AllowEdit { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            dotNetHelper = DotNetObjectReference.Create(this);
+            htmlEditorModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/ExpressApp.Blazor.CustomEditors/HtmlEditorComponent.js");
+            htmlEditor = await htmlEditorModule.InvokeAsync<IJSObjectReference>("createElement", htmlEditorElement, dotNetHelper, Value, !AllowEdit, System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "fa");
+        }
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        try
+        {
+            if (htmlEditorModule is not null) await htmlEditorModule.InvokeVoidAsync("dispose", htmlEditorElement);
+        }
+        catch (Exception ex) when (ex.GetType().Name == "JSDisconnectedException")
+        {
+            //https://github.com/dotnet/aspnetcore/issues/33336#issuecomment-862425579
+        }
+
+        if (htmlEditor is not null) await htmlEditor.DisposeAsync();
+        if (htmlEditorModule is not null) await htmlEditorModule.DisposeAsync();
+        dotNetHelper?.Dispose();
+    }
+
+    protected override bool ShouldRender() => false;
+
+    public async Task Refresh()
+    {
+        if (htmlEditorModule is not null)
+        {
+            await htmlEditorModule.InvokeVoidAsync("refresh", htmlEditorElement, Value);
+        }
+    }
+
+    public async Task AllowEditChanged(bool a)
+    {
+        if (htmlEditorModule is not null)
+        {
+            await htmlEditorModule.InvokeVoidAsync("allowEdit", htmlEditorElement, a);
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnValueChanged(string value) => await ValueChanged.InvokeAsync(value);
+}

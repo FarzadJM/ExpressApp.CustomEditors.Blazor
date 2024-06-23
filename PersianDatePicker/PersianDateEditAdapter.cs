@@ -5,7 +5,6 @@ using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
 using Microsoft.AspNetCore.Components;
-using System.Globalization;
 
 namespace ExpressApp.Blazor.CustomEditors.PersianDatePicker;
 
