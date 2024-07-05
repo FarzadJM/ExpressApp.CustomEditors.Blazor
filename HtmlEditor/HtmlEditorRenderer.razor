@@ -1,44 +1,38 @@
-﻿@implements IDisposable
+﻿@using DevExpress.Blazor
+@using DevExpress.Blazor.Office
+@using DevExpress.Blazor.Office.Internal
 
-<HtmlEditorComponent @ref="htmlEditorComponent"
-                     Value="@ComponentModel.Value"
-                     AllowEdit="@ComponentModel.AllowEdit"
-                     ValueChanged="@ComponentModel.ValueChanged"></HtmlEditorComponent>
+<DxHtmlEditor @ref="htmlEditorComponent"
+              Markup="@ComponentModel.Markup"
+              MarkupChanged="@ComponentModel.MarkupChanged"
+              Attributes="@ComponentModel.Attributes.ToDictionary()"
+              BindMarkupMode="HtmlEditorBindMarkupMode.OnDelayedInput"
+              ReadOnly="@ComponentModel.ReadOnly"
+              CssClass="@ComponentModel.CssClass"
+              CustomizeToolbar="@OnCustomizeToolbar"
+              NullText="@ComponentModel.NullText" />
 
 @code {
-    private HtmlEditorComponent htmlEditorComponent;
+    private DxHtmlEditor htmlEditorComponent;
 
     [Parameter]
     public HtmlEditorModel ComponentModel { get; set; }
 
     public static RenderFragment Create(HtmlEditorModel componentModel) => @<HtmlEditorRenderer ComponentModel=@componentModel />;
 
-    public override Task SetParametersAsync(ParameterView parameters)
+    private void OnCustomizeToolbar(IToolbar toolbar)
     {
-        if (ComponentModel is not null)
-        {
-            ComponentModel.RefreshRequested -= ComponentModel_RefreshRequested;
-            ComponentModel.AllowEditValueChanged -= ComponentModel_AllowEditValueChanged;
-        }
+        var fonts = toolbar.Groups[HtmlEditorToolbarGroupNames.Font] as BarGroupInfo;
+        var fontNames = fonts?.Items["FontName"] as ComboBoxInfo;
+        fontNames?.Items.Clear();
+        fontNames?.Items.Add("Calibri", "Calibri");
+        fontNames?.Items.Add("Homa", "B Homa");
+        fontNames?.Items.Add("Nazanin", "B Nazanin");
+        fontNames?.Items.Add("Tahoma", "Tahoma");
+        fontNames?.Items.Add("Traffic", "B Traffic");
+        fontNames?.Items.Add("Wingdings", "Wingdings");
+        fontNames?.Items.Add("Zar", "B Zar");
 
-        return base.SetParametersAsync(parameters);
-    }
-
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-
-        ComponentModel.RefreshRequested += ComponentModel_RefreshRequested;
-        ComponentModel.AllowEditValueChanged += ComponentModel_AllowEditValueChanged;
-    }
-
-    protected void ComponentModel_RefreshRequested(object sender, EventArgs e) => htmlEditorComponent?.Refresh();
-
-    protected void ComponentModel_AllowEditValueChanged(object sender, bool e) => htmlEditorComponent?.AllowEditChanged(e);
-
-    void IDisposable.Dispose()
-    {
-        ComponentModel.RefreshRequested -= ComponentModel_RefreshRequested;
-        ComponentModel.AllowEditValueChanged -= ComponentModel_AllowEditValueChanged;
+        toolbar.Groups[HtmlEditorToolbarGroupNames.Paragraph].Items.Remove("ParagraphStyles");
     }
 }

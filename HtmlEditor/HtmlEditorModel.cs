@@ -1,46 +1,93 @@
-﻿using DevExpress.ExpressApp.Blazor.Components.Models;
+﻿using DevExpress.ExpressApp.Blazor.Components;
+using DevExpress.ExpressApp.Blazor.Components.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
+using System.Runtime.CompilerServices;
 
 namespace ExpressApp.Blazor.CustomEditors.HtmlEditor;
 
-public sealed class HtmlEditorModel : ComponentModelBase
+public sealed class HtmlEditorModel : DxComponentModelBase, IHandleValueComponentModel
 {
-    public EventCallback<string> ValueChanged
+    private event EventHandler<HandleValueEventArgs> valueChanged;
+
+    public HtmlEditorModel()
     {
-        get => GetPropertyValue<EventCallback<string>>();
-        set => SetPropertyValue(value);
+        MarkupChanged = EventCallback.Factory.Create(this, delegate (string value)
+        {
+            this.valueChanged?.Invoke(this, new HandleValueEventArgs(value));
+        });
     }
 
-    public event EventHandler? RefreshRequested;
-    public event EventHandler<bool> AllowEditValueChanged;
+    public bool SetPropertyValue<T>(T newValue, string propertyName) => SetPropertyValue(newValue, notify: true, propertyName);
 
-    public string Value
+    public string Markup
     {
-        get => GetPropertyValue<string>();
+        get
+        {
+            return GetPropertyValue(string.Empty, nameof(Markup));
+        }
         set
         {
-            if (SetPropertyValue(value))
-            {
-                RefreshRequested?.Invoke(this, EventArgs.Empty);
-            }
+            SetPropertyValue(value, notify: true, nameof(Markup));
         }
     }
 
-    public bool SetValueFromUi(string value)
+    public EventCallback<string> MarkupChanged
     {
-        return SetPropertyValue(value, propertyName: nameof(Value));
-    }
-
-    public bool AllowEdit
-    {
-        get => GetPropertyValue<bool>();
+        get
+        {
+            return GetPropertyValue(default(EventCallback<string>), nameof(MarkupChanged));
+        }
         set
         {
-            if (SetPropertyValue(value))
-            {
-                AllowEditValueChanged?.Invoke(this, value);
-            }
+            SetPropertyValue(value, notify: true, nameof(MarkupChanged));
+        }
+    }
+
+    public string NullText
+    {
+        get
+        {
+            return GetPropertyValue(string.Empty, nameof(NullText));
+        }
+        set
+        {
+            SetPropertyValue(value, notify: true, nameof(NullText));
+        }
+    }
+
+    public bool Enabled
+    {
+        get
+        {
+            return GetPropertyValue(defaultValue: true, nameof(Enabled));
+        }
+        set
+        {
+            SetPropertyValue(value, notify: true, nameof(Enabled));
+        }
+    }
+
+    object IHandleValueComponentModel.Value
+    {
+        get
+        {
+            return Markup;
+        }
+        set
+        {
+            Markup = ((string)value) ?? string.Empty;
+        }
+    }
+
+    event EventHandler<HandleValueEventArgs> IHandleValueComponentModel.ValueChanged
+    {
+        add
+        {
+            valueChanged += value;
+        }
+        remove
+        {
+            valueChanged -= value;
         }
     }
 }

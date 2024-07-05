@@ -1,4 +1,5 @@
 ﻿using DevExpress.ExpressApp.Blazor.Components;
+using DevExpress.ExpressApp.Blazor.Components.Models;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
@@ -11,9 +12,9 @@ public sealed class HtmlEditorAdapter : ComponentAdapterBase
     public HtmlEditorAdapter(HtmlEditorModel componentModel)
     {
         ComponentModel = componentModel ?? throw new ArgumentNullException(nameof(componentModel));
-        ComponentModel.ValueChanged = EventCallback.Factory.Create<string>(this, value =>
+        ComponentModel.MarkupChanged = EventCallback.Factory.Create<string>(this, markup =>
         {
-            if (componentModel.SetValueFromUi(value))
+            if (ComponentModel.SetPropertyValue(markup, nameof(HtmlEditorModel.Markup)))
             {
                 RaiseValueChanged();
             }
@@ -24,62 +25,59 @@ public sealed class HtmlEditorAdapter : ComponentAdapterBase
 
     public override object GetValue()
     {
-        return ComponentModel.Value;
+        return ComponentModel.Markup;
     }
 
     public override void SetAllowEdit(bool allowEdit)
     {
-        ComponentModel.AllowEdit = allowEdit;
+        if (ComponentModel is DxComponentModelBase dxComponentModelBase)
+        {
+            dxComponentModelBase.ReadOnly = !allowEdit;
+        }
+
+        ComponentModel.Enabled = allowEdit;
     }
 
     public override void SetAllowNull(bool allowNull)
     {
-        //throw new NotImplementedException();
     }
 
     public override void SetDisplayFormat(string displayFormat)
     {
-        //throw new NotImplementedException();
     }
 
     public override void SetEditMask(string editMask)
     {
-        //throw new NotImplementedException();
     }
 
     public override void SetEditMaskType(EditMaskType editMaskType)
     {
-        //throw new NotImplementedException();
     }
 
     public override void SetErrorIcon(ImageInfo errorIcon)
     {
-        //throw new NotImplementedException();
     }
 
     public override void SetErrorMessage(string errorMessage)
     {
-        //throw new NotImplementedException();
     }
 
     public override void SetIsPassword(bool isPassword)
     {
-        //throw new NotImplementedException();
     }
 
     public override void SetMaxLength(int maxLength)
     {
-        //throw new NotImplementedException();
     }
 
     public override void SetNullText(string nullText)
     {
-        //throw new NotImplementedException();
+        ComponentModel.NullText = nullText;
     }
 
     public override void SetValue(object value)
     {
-        ComponentModel.Value = (string)value;
+        ComponentModel.Markup = ((string)value) ?? string.Empty;
     }
 
     protected override RenderFragment CreateComponent()
