@@ -16,15 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\dx-blazor.svg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="HtmlEditor\dx.light.compact.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\dx-blazor.svg" />
   </ItemGroup>
 
   <ItemGroup>
