@@ -15,7 +15,10 @@
            InputCssClass="@(System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "fa" ? "persian-date-picker-input-fa":"persian-date-picker-input-en")"
            ReadOnly="@ComponentModel.ReadOnly">
     <Buttons>
-        <DxEditorButton Enabled="@(ComponentModel.Enabled && !ComponentModel.ReadOnly)" IconCssClass="dxbl-btn-icon dxbl-image editor-icon editor-icon-add" Tooltip="نمایش تقویم" Click="(x) => OpenClose()" />
+        <DxEditorButton Enabled="@(ComponentModel.Enabled && !ComponentModel.ReadOnly)"
+                        IconCssClass="dxbl-btn-icon dxbl-image editor-icon editor-icon-add"
+                        Tooltip="نمایش تقویم"
+                        Click="(x) => OpenClose()"/>
     </Buttons>
 </DxTextBox>
 
@@ -34,12 +37,12 @@
             <div class="dxbl-calendar-header">
                 <button class="dxbl-btn dxbl-btn-text-secondary dxbl-btn-tool dxbl-calendar-header-previous-year-btn" aria-label="Previous Year" type="button" onclick="@PreviousYearButton_Clicked">
                     <svg class="dxbl-image" aria-hidden="true" focusable="false">
-                        <use href="_content/DevExpress.Blazor/dx-blazor-3192a3170e.svg#dx-chevron-double-right" />
+                        <use href="_content/ExpressApp.Blazor.CustomEditors/dx-blazor.svg#dx-chevron-double-right" />
                     </svg>
                 </button>
                 <button class="dxbl-btn dxbl-btn-text-secondary dxbl-btn-tool dxbl-calendar-header-previous-month-btn" aria-label="Previous Month" type="button" onclick="@PreviousMonthButton_Clicked">
                     <svg class="dxbl-image" aria-hidden="true" focusable="false">
-                        <use href="_content/DevExpress.Blazor/dx-blazor-3192a3170e.svg#dx-chevron-right"></use>
+                        <use href="_content/ExpressApp.Blazor.CustomEditors/dx-blazor.svg#dx-chevron-right"></use>
                     </svg>
                 </button>
                 <button class="dxbl-btn dxbl-btn-text-secondary dxbl-btn-tool dxbl-calendar-header-title-btn">
@@ -47,12 +50,12 @@
                 </button>
                 <button class="dxbl-btn dxbl-btn-text-secondary dxbl-btn-tool dxbl-calendar-header-next-month-btn" aria-label="Next Month" type="button" onclick="@NextMonthButton_Clicked">
                     <svg class="dxbl-image" aria-hidden="true" focusable="false">
-                        <use href="_content/DevExpress.Blazor/dx-blazor-3192a3170e.svg#dx-chevron-left"></use>
+                        <use href="_content/ExpressApp.Blazor.CustomEditors/dx-blazor.svg#dx-chevron-left"></use>
                     </svg>
                 </button>
                 <button class="dxbl-btn dxbl-btn-text-secondary dxbl-btn-tool dxbl-calendar-header-next-year-btn" aria-label="Next Year" type="button" onclick="@NextYearButton_Clicked">
                     <svg class="dxbl-image" aria-hidden="true" focusable="false">
-                        <use href="_content/DevExpress.Blazor/dx-blazor-3192a3170e.svg#dx-chevron-double-left" />
+                        <use href="_content/ExpressApp.Blazor.CustomEditors/dx-blazor.svg#dx-chevron-double-left" />
                     </svg>
                 </button>
             </div>
