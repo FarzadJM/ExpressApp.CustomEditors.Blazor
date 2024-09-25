@@ -11,9 +11,9 @@ public class DateTimePropertyEditor : BlazorPropertyEditorBase
 {
     public override bool CanFormatPropertyValue => true;
 
-    public override DxDateEditModel ComponentModel => (base.Control as DxDateEditAdapter)?.ComponentModel;
+    public override DxDateEditModel? ComponentModel => (base.Control as DxDateEditAdapter)?.ComponentModel;
 
-    public DxDateTimeMaskPropertiesModel MaskProperties => (base.Control as DxDateEditAdapter)?.MaskProperties;
+    public DxDateTimeMaskPropertiesModel? MaskProperties => (base.Control as DxDateEditAdapter)?.MaskProperties;
 
     public DateTimePropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model)
     {

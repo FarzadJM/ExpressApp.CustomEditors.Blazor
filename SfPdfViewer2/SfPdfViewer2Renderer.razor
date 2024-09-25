@@ -1,0 +1,44 @@
+﻿@using Syncfusion.Blazor;
+@using Syncfusion.Blazor.SfPdfViewer;
+
+<SfPdfViewer2 @ref="@sfPdfViewer2"
+              DocumentPath="@ComponentModel!.DocumentPath"
+              EnableFormFields="@(!ComponentModel.ReadOnly || !documentLoaded)"
+              ZoomValue="100"
+              DownloadFileName="@ComponentModel.DownloadFileName"
+              EnableErrorDialog="false">
+    <PdfViewerToolbarSettings ToolbarItems="ToolbarItems"></PdfViewerToolbarSettings>
+    <PdfViewerContextMenuSettings EnableContextMenu="false"></PdfViewerContextMenuSettings>
+    <PdfViewerEvents DocumentEdited="@DocumentEdited" DocumentLoaded="@DocumentLoaded"></PdfViewerEvents>
+</SfPdfViewer2>
+
+@code {
+    private SfPdfViewer2? sfPdfViewer2;
+    private bool readOnly;
+    private bool documentLoaded;
+
+    [Parameter]
+    public SfPdfViewer2Model? ComponentModel { get; set; }
+
+    public async Task DocumentEdited(DocumentEditedEventArgs args)
+    {
+        if (args.EditingAction == EditingAction.FormFieldUpdated)
+        {
+            ComponentModel!.FormFields = await sfPdfViewer2!.ExportFormFieldsAsObjectAsync();
+            await ComponentModel.FormFieldChangedFromUI.InvokeAsync();
+        }
+    }
+
+    public async Task DocumentLoaded(LoadEventArgs args)
+    {
+        await ImportFieldsAsync();
+        ComponentModel!.FormFieldChangedFromDb = EventCallback.Factory.Create(this, async () => await ImportFieldsAsync());
+        documentLoaded = true;
+
+        async Task ImportFieldsAsync() => await sfPdfViewer2!.ImportFormFieldsAsync(ComponentModel!.FormFields);
+    }
+
+    private List<ToolbarItem> ToolbarItems = new List<ToolbarItem>() { ToolbarItem.PageNavigationTool, ToolbarItem.MagnificationTool, ToolbarItem.SelectionTool, ToolbarItem.SearchOption, ToolbarItem.DownloadOption };
+
+    public static RenderFragment Create(SfPdfViewer2Model componentModel) => @<SfPdfViewer2Renderer ComponentModel=@componentModel />;
+}
