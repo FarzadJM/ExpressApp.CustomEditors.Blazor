@@ -3,7 +3,7 @@ using DevExpress.ExpressApp.Blazor.Components.Models;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using Microsoft.AspNetCore.Components;
 
-namespace ExpressApp.Blazor.CustomEditors.PersianDatePicker;
+namespace ExpressApp.CustomEditors.Blazor.PersianDatePicker;
 
 public class PersianDateEditAdapter<T> : DxDateEditAdapter
 {

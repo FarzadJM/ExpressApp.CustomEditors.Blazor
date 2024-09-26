@@ -6,41 +6,41 @@ using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
 using System.ComponentModel;
 
-namespace ExpressApp.Blazor.CustomEditors
+namespace ExpressApp.CustomEditors.Blazor;
+
+public class ExtendedTypePropertyEditor : TypePropertyEditor
 {
-    public class ExtendedTypePropertyEditor : TypePropertyEditor
+    private readonly TypeConverter typeConverter;
+
+    public ExtendedTypePropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model)
     {
-        private readonly TypeConverter typeConverter;
-
-        public ExtendedTypePropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model)
-        {
-            typeConverter = new CustomLocalizedClassInfoTypeConverter();
-        }
-
-        protected override IComponentAdapter CreateComponentAdapter()
-        {
-            DxComboBoxModel<DataItem<Type>, Type> dxComboBoxModel = new DxComboBoxModel<DataItem<Type>, Type>();
-            List<DataItem<Type>> list = new List<DataItem<Type>>();
-            foreach (Type item in typeConverter.GetStandardValues()!)
-            {
-                if (IsSuitableType(item))
-                {
-                    list.Add(new DataItem<Type>(item, typeConverter.ConvertToString(item)));
-                }
-            }
-
-            dxComboBoxModel.Data = list;
-            dxComboBoxModel.ValueFieldName = "Value";
-            dxComboBoxModel.TextFieldName = "Text";
-            dxComboBoxModel.FilteringMode = DataGridFilteringMode.Contains;
-            return new DxComboBoxAdapter<DataItem<Type>, Type>(dxComboBoxModel);
-        }
+        typeConverter = new CustomLocalizedClassInfoTypeConverter();
     }
-    public class CustomLocalizedClassInfoTypeConverter : LocalizedClassInfoTypeConverter
+
+    protected override IComponentAdapter CreateComponentAdapter()
     {
-        protected override string GetClassCaption(string fullName)
+        DxComboBoxModel<DataItem<Type>, Type> dxComboBoxModel = new DxComboBoxModel<DataItem<Type>, Type>();
+        List<DataItem<Type>> list = new List<DataItem<Type>>();
+        foreach (Type item in typeConverter.GetStandardValues()!)
         {
-            return $"{base.GetClassCaption(fullName)} ({fullName})";
+            if (IsSuitableType(item))
+            {
+                list.Add(new DataItem<Type>(item, typeConverter.ConvertToString(item)));
+            }
         }
+
+        dxComboBoxModel.Data = list;
+        dxComboBoxModel.ValueFieldName = "Value";
+        dxComboBoxModel.TextFieldName = "Text";
+        dxComboBoxModel.FilteringMode = DataGridFilteringMode.Contains;
+        return new DxComboBoxAdapter<DataItem<Type>, Type>(dxComboBoxModel);
+    }
+}
+
+public class CustomLocalizedClassInfoTypeConverter : LocalizedClassInfoTypeConverter
+{
+    protected override string GetClassCaption(string fullName)
+    {
+        return $"{base.GetClassCaption(fullName)} ({fullName})";
     }
 }

@@ -1,6 +1,6 @@
 ﻿using DevExpress.ExpressApp.Blazor.Components.Models;
 
-namespace ExpressApp.Blazor.CustomEditors.PdfViewer;
+namespace ExpressApp.CustomEditors.Blazor.PdfViewer;
 
 public class PdfViewerModel : DxComponentModelBase
 {

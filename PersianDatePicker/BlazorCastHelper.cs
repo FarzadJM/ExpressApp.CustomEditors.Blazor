@@ -1,7 +1,7 @@
 ﻿using DevExpress.Blazor;
 using DevExpress.Data;
 
-namespace ExpressApp.Blazor.CustomEditors.PersianDatePicker;
+namespace ExpressApp.CustomEditors.Blazor.PersianDatePicker;
 
 public static class BlazorCastHelper
 {

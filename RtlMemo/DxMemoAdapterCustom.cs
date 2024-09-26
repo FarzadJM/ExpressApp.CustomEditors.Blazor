@@ -1,7 +1,7 @@
 ﻿using DevExpress.ExpressApp.Blazor.Components.Models;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 
-namespace ExpressApp.Blazor.CustomEditors.RtlMemo;
+namespace ExpressApp.CustomEditors.Blazor.RtlMemo;
 
 public class DxMemoAdapterCustom : DxMemoAdapter
 {

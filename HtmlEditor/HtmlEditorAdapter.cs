@@ -5,7 +5,7 @@ using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
 using Microsoft.AspNetCore.Components;
 
-namespace ExpressApp.Blazor.CustomEditors.HtmlEditor;
+namespace ExpressApp.CustomEditors.Blazor.HtmlEditor;
 
 public sealed class HtmlEditorAdapter : ComponentAdapterBase
 {

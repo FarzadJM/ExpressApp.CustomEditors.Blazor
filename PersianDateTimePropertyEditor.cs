@@ -2,17 +2,17 @@
 using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Model;
-using ExpressApp.Blazor.CustomEditors.PersianDatePicker;
+using ExpressApp.CustomEditors.Blazor.PersianDatePicker;
 
-namespace ExpressApp.Blazor.CustomEditors;
+namespace ExpressApp.CustomEditors.Blazor;
 
 public class PersianDateTimePropertyEditor : BlazorPropertyEditorBase
 {
     public override bool CanFormatPropertyValue => true;
 
-    public override DxDateEditModel ComponentModel => (base.Control as DxDateEditAdapter)?.ComponentModel;
+    public override DxDateEditModel? ComponentModel => (Control as DxDateEditAdapter)?.ComponentModel;
 
-    public DxDateTimeMaskPropertiesModel MaskProperties => (base.Control as DxDateEditAdapter)?.MaskProperties;
+    public DxDateTimeMaskPropertiesModel? MaskProperties => (Control as DxDateEditAdapter)?.MaskProperties;
 
     public PersianDateTimePropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model)
     {
@@ -20,19 +20,19 @@ public class PersianDateTimePropertyEditor : BlazorPropertyEditorBase
 
     protected override IComponentAdapter CreateComponentAdapter()
     {
-        if (base.AllowNull)
+        if (AllowNull)
         {
-            return new PersianDatePicker.PersianDateEditAdapter<DateTime?>(new DxDateEditModel<DateTime?>());
+            return new PersianDateEditAdapter<DateTime?>(new DxDateEditModel<DateTime?>());
         }
 
-        return new PersianDatePicker.PersianDateEditAdapter<DateTime>(new DxDateEditModel<DateTime>());
+        return new PersianDateEditAdapter<DateTime>(new DxDateEditModel<DateTime>());
     }
 
     protected override void OnControlCreated()
     {
-        if (base.Control is PersianDateEditAdapter<DateTime> persianDateEditAdapter)
+        if (Control is PersianDateEditAdapter<DateTime> persianDateEditAdapter)
         {
-            persianDateEditAdapter.ComponentModel.NullValue = default(DateTime);
+            persianDateEditAdapter.ComponentModel.NullValue = default;
         }
 
         base.OnControlCreated();

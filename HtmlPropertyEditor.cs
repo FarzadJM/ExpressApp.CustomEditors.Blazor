@@ -1,9 +1,9 @@
 ﻿using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Model;
-using ExpressApp.Blazor.CustomEditors.HtmlEditor;
+using ExpressApp.CustomEditors.Blazor.HtmlEditor;
 
-namespace ExpressApp.Blazor.CustomEditors;
+namespace ExpressApp.CustomEditors.Blazor;
 
 /// <summary>
 /// Requirements:
@@ -15,5 +15,5 @@ public class HtmlPropertyEditor : BlazorPropertyEditorBase
 {
     public HtmlPropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model) { }
     protected override IComponentAdapter CreateComponentAdapter() => new HtmlEditorAdapter(new HtmlEditorModel());
-    public override HtmlEditorModel ComponentModel => (Control as HtmlEditorAdapter)?.ComponentModel;
+    public override HtmlEditorModel? ComponentModel => (Control as HtmlEditorAdapter)?.ComponentModel;
 }

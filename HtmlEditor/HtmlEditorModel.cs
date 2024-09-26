@@ -3,7 +3,7 @@ using DevExpress.ExpressApp.Blazor.Components.Models;
 using Microsoft.AspNetCore.Components;
 using System.Runtime.CompilerServices;
 
-namespace ExpressApp.Blazor.CustomEditors.HtmlEditor;
+namespace ExpressApp.CustomEditors.Blazor.HtmlEditor;
 
 public sealed class HtmlEditorModel : DxComponentModelBase, IHandleValueComponentModel
 {

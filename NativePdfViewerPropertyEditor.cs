@@ -1,9 +1,9 @@
 ﻿using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Model;
-using ExpressApp.Blazor.CustomEditors.NativePdfViewer;
+using ExpressApp.CustomEditors.Blazor.NativePdfViewer;
 
-namespace ExpressApp.Blazor.CustomEditors;
+namespace ExpressApp.CustomEditors.Blazor;
 
 public class NativePdfViewerPropertyEditor : BlazorPropertyEditorBase
 {

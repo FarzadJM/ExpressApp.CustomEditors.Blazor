@@ -4,7 +4,7 @@ using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
 using Microsoft.AspNetCore.Components;
 
-namespace ExpressApp.Blazor.CustomEditors.PdfViewer;
+namespace ExpressApp.CustomEditors.Blazor.PdfViewer;
 
 public class PdfViewerAdapter : ComponentAdapterBase
 {

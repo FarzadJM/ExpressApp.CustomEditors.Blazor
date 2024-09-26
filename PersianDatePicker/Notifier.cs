@@ -1,6 +1,6 @@
 ﻿using DevExpress.ExpressApp.Blazor.Components.Models;
 
-namespace ExpressApp.Blazor.CustomEditors.PersianDatePicker;
+namespace ExpressApp.CustomEditors.Blazor.PersianDatePicker;
 
 internal class Notifier : IComponentModel
 {

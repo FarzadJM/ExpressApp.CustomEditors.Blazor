@@ -1,9 +1,9 @@
 ﻿using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Model;
-using ExpressApp.Blazor.CustomEditors.SfPdfViewer2;
+using ExpressApp.CustomEditors.Blazor.SfPdfViewer2;
 
-namespace ExpressApp.Blazor.CustomEditors;
+namespace ExpressApp.CustomEditors.Blazor;
 
 public class SfPdfViewer2Editor : BlazorPropertyEditorBase
 {

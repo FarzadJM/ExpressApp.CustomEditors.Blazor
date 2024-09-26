@@ -1,7 +1,7 @@
 ﻿using DevExpress.ExpressApp.Blazor.Components.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace ExpressApp.Blazor.CustomEditors.SfPdfViewer2;
+namespace ExpressApp.CustomEditors.Blazor.SfPdfViewer2;
 
 public class SfPdfViewer2Model : DxComponentModelBase
 {
