@@ -2,6 +2,7 @@
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
+using ExpressApp.CustomEditors.Base;
 using Microsoft.AspNetCore.Components;
 
 namespace ExpressApp.CustomEditors.Blazor.SfPdfViewer2;

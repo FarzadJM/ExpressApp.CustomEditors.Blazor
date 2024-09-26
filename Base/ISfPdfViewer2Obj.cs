@@ -1,4 +1,4 @@
-﻿namespace ExpressApp.CustomEditors.Blazor.SfPdfViewer2;
+﻿namespace ExpressApp.CustomEditors.Base;
 
 public interface ISfPdfViewer2Obj
 {
