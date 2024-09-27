@@ -4,16 +4,16 @@ using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
 using Microsoft.AspNetCore.Components;
 
-namespace ExpressApp.CustomEditors.Blazor.PdfViewer;
+namespace ExpressApp.CustomEditors.Blazor.BaseImpl.DxPdfViewer;
 
-public class PdfViewerAdapter : ComponentAdapterBase
+public class DxPdfViewerAdapter : ComponentAdapterBase
 {
-    public PdfViewerAdapter(PdfViewerModel componentModel)
+    public DxPdfViewerAdapter(DxPdfViewerModel componentModel)
     {
         ComponentModel = componentModel ?? throw new ArgumentNullException(nameof(componentModel));
     }
 
-    public override PdfViewerModel ComponentModel { get; }
+    public override DxPdfViewerModel ComponentModel { get; }
 
     public override object GetValue()
     {
@@ -62,11 +62,11 @@ public class PdfViewerAdapter : ComponentAdapterBase
 
     public override void SetValue(object value)
     {
-        ComponentModel.DocumentContent = ((byte[])value) ?? [];
+        ComponentModel.DocumentContent = (byte[])value ?? [];
     }
 
     protected override RenderFragment CreateComponent()
     {
-        return ComponentModelObserver.Create(ComponentModel, PdfViewerRenderer.Create(ComponentModel));
+        return ComponentModelObserver.Create(ComponentModel, DxPdfViewerRenderer.Create(ComponentModel));
     }
 }

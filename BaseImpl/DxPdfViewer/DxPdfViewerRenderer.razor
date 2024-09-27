@@ -1,0 +1,15 @@
+﻿@using DevExpress.Blazor.PdfViewer
+
+<DxPdfViewer @ref="dxPdfViewer"
+             CssClass="@ComponentModel!.CssClass"
+             IsSinglePagePreview="true"
+             DocumentContent="@ComponentModel.DocumentContent" />
+
+@code {
+    private DxPdfViewer? dxPdfViewer;
+
+    [Parameter]
+    public DxPdfViewerModel? ComponentModel { get; set; }
+
+    public static RenderFragment Create(DxPdfViewerModel componentModel) => @<DxPdfViewerRenderer ComponentModel=@componentModel />;
+}

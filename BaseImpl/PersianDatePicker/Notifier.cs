@@ -1,6 +1,6 @@
 ﻿using DevExpress.ExpressApp.Blazor.Components.Models;
 
-namespace ExpressApp.CustomEditors.Blazor.PersianDatePicker;
+namespace ExpressApp.CustomEditors.Blazor.BaseImpl.PersianDatePicker;
 
 internal class Notifier : IComponentModel
 {
@@ -50,6 +50,6 @@ internal class Notifier : IComponentModel
 
     public void RaiseChanged()
     {
-        this.Changed?.Invoke(this, EventArgs.Empty);
+        Changed?.Invoke(this, EventArgs.Empty);
     }
 }

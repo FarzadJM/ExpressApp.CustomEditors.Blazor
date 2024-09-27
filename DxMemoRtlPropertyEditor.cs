@@ -2,13 +2,12 @@
 using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Model;
-using ExpressApp.CustomEditors.Blazor.RtlMemo;
 
 namespace ExpressApp.CustomEditors.Blazor;
 
-public class RtlMemoPropertyEditor : StringPropertyEditor
+public class DxMemoRtlPropertyEditor : StringPropertyEditor
 {
-    public RtlMemoPropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model)
+    public DxMemoRtlPropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model)
     {
     }
 
@@ -18,7 +17,7 @@ public class RtlMemoPropertyEditor : StringPropertyEditor
 
         if (componentAdapter is DxMemoAdapter)
         {
-            return new DxMemoAdapterCustom(new DxMemoModel
+            return new BaseImpl.DxMemoRtl.DxMemoAdapter(new DxMemoModel
             {
                 Rows = Model.RowCount
             });

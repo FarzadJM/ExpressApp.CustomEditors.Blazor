@@ -1,27 +1,27 @@
 ﻿using DevExpress.ExpressApp.Blazor.Components;
-using DevExpress.ExpressApp.Blazor.Components.Models;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Utils;
 using Microsoft.AspNetCore.Components;
 
-namespace ExpressApp.CustomEditors.Blazor.HtmlEditor;
+namespace ExpressApp.CustomEditors.Blazor.BaseImpl.DxHtmlEditor;
 
-public sealed class HtmlEditorAdapter : ComponentAdapterBase
+public sealed class DxHtmlEditorAdapter : ComponentAdapterBase
 {
-    public HtmlEditorAdapter(HtmlEditorModel componentModel)
+    public DxHtmlEditorAdapter(DxHtmlEditorModel componentModel)
     {
         ComponentModel = componentModel ?? throw new ArgumentNullException(nameof(componentModel));
-        ComponentModel.MarkupChanged = EventCallback.Factory.Create<string>(this, markup =>
+        ComponentModel.MarkupChanged = EventCallback.Factory.Create<string>(this, (markup) =>
         {
-            if (ComponentModel.SetPropertyValue(markup, nameof(HtmlEditorModel.Markup)))
+            if (!EqualityComparer<string>.Default.Equals(componentModel.Markup, markup))
             {
+                componentModel.Markup = markup;
                 RaiseValueChanged();
             }
         });
     }
 
-    public override HtmlEditorModel ComponentModel { get; }
+    public override DxHtmlEditorModel ComponentModel { get; }
 
     public override object GetValue()
     {
@@ -30,12 +30,7 @@ public sealed class HtmlEditorAdapter : ComponentAdapterBase
 
     public override void SetAllowEdit(bool allowEdit)
     {
-        if (ComponentModel is DxComponentModelBase dxComponentModelBase)
-        {
-            dxComponentModelBase.ReadOnly = !allowEdit;
-        }
-
-        ComponentModel.Enabled = allowEdit;
+        ComponentModel.ReadOnly = !allowEdit;
     }
 
     public override void SetAllowNull(bool allowNull)
@@ -77,11 +72,11 @@ public sealed class HtmlEditorAdapter : ComponentAdapterBase
 
     public override void SetValue(object value)
     {
-        ComponentModel.Markup = ((string)value) ?? string.Empty;
+        ComponentModel.Markup = (string)value ?? string.Empty;
     }
 
     protected override RenderFragment CreateComponent()
     {
-        return ComponentModelObserver.Create(ComponentModel, HtmlEditorRenderer.Create(ComponentModel));
+        return ComponentModelObserver.Create(ComponentModel, DxHtmlEditorRenderer.Create(ComponentModel));
     }
 }

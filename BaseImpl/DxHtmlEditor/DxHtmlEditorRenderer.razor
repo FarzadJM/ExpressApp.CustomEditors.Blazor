@@ -3,7 +3,7 @@
 @using DevExpress.Blazor.Office.Internal
 
 <DxHtmlEditor @ref="htmlEditorComponent"
-              Markup="@ComponentModel.Markup"
+              Markup="@ComponentModel!.Markup"
               MarkupChanged="@ComponentModel.MarkupChanged"
               Attributes="@ComponentModel.Attributes.ToDictionary()"
               BindMarkupMode="HtmlEditorBindMarkupMode.OnDelayedInput"
@@ -13,12 +13,12 @@
               NullText="@ComponentModel.NullText" />
 
 @code {
-    private DxHtmlEditor htmlEditorComponent;
+    private DxHtmlEditor? htmlEditorComponent;
 
     [Parameter]
-    public HtmlEditorModel ComponentModel { get; set; }
+    public DxHtmlEditorModel? ComponentModel { get; set; }
 
-    public static RenderFragment Create(HtmlEditorModel componentModel) => @<HtmlEditorRenderer ComponentModel=@componentModel />;
+    public static RenderFragment Create(DxHtmlEditorModel componentModel) => @<DxHtmlEditorRenderer ComponentModel=@componentModel />;
 
     private void OnCustomizeToolbar(IToolbar toolbar)
     {

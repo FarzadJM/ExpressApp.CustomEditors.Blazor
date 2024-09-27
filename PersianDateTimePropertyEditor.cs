@@ -2,7 +2,7 @@
 using DevExpress.ExpressApp.Blazor.Editors;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Model;
-using ExpressApp.CustomEditors.Blazor.PersianDatePicker;
+using ExpressApp.CustomEditors.Blazor.BaseImpl.PersianDatePicker;
 
 namespace ExpressApp.CustomEditors.Blazor;
 

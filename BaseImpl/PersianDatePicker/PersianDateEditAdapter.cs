@@ -3,7 +3,7 @@ using DevExpress.ExpressApp.Blazor.Components.Models;
 using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using Microsoft.AspNetCore.Components;
 
-namespace ExpressApp.CustomEditors.Blazor.PersianDatePicker;
+namespace ExpressApp.CustomEditors.Blazor.BaseImpl.PersianDatePicker;
 
 public class PersianDateEditAdapter<T> : DxDateEditAdapter
 {
@@ -21,10 +21,10 @@ public class PersianDateEditAdapter<T> : DxDateEditAdapter
         }
 
         ComponentModel = componentModel;
-        ComponentModel.DateChanged = EventCallback.Factory.Create((object)this, (Action<T>)ComponentModel_DateChanged);
+        ComponentModel.DateChanged = EventCallback.Factory.Create(this, (Action<T>)ComponentModel_DateChanged);
         notifier = new Notifier(componentModel);
-        notifier.Subscribe(base.MaskProperties);
-        ComponentModel.MaskProperties = base.MaskProperties.GetComponentContent();
+        notifier.Subscribe(MaskProperties);
+        ComponentModel.MaskProperties = MaskProperties.GetComponentContent();
     }
 
     private void ComponentModel_DateChanged(T date)
@@ -66,12 +66,12 @@ public class PersianDateEditAdapter<T> : DxDateEditAdapter
 
     public override void SetValue(object value)
     {
-        ComponentModel.Date = ((value == null) ? default(T) : ((T)value));
+        ComponentModel.Date = value == null ? default : (T)value;
     }
 
     protected override RenderFragment CreateComponent()
     {
         //return ComponentModelObserver.Create(ComponentModel, PersianDateEditRenderer<T>.Create(ComponentModel));
-        return ComponentModelObserver.Create(notifier, ComponentModelObserver.Create(base.ConditionalAppearanceModel, ConditionalAppearanceContainer.Create(base.ConditionalAppearanceModel, GetConditionalAppearanceSelector(), XafValidationMessageContainer.Create(ValidationModel, PersianDateEditRenderer<T>.Create(ComponentModel)))));
+        return ComponentModelObserver.Create(notifier, ComponentModelObserver.Create(ConditionalAppearanceModel, ConditionalAppearanceContainer.Create(ConditionalAppearanceModel, GetConditionalAppearanceSelector(), XafValidationMessageContainer.Create(ValidationModel, PersianDateEditRenderer<T>.Create(ComponentModel)))));
     }
 }

@@ -1,6 +1,6 @@
 ﻿using DevExpress.ExpressApp.Blazor.Components.Models;
 
-namespace ExpressApp.CustomEditors.Blazor.NativePdfViewer;
+namespace ExpressApp.CustomEditors.Blazor.BaseImpl.NativePdfViewer;
 
 public class PdfComponentModel : ComponentModelBase
 {

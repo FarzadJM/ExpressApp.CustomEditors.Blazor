@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="HtmlEditor\dx.light.compact.css" />
+    <None Remove="BaseImpl\DxHtmlEditor\dx.light.compact.css" />
   </ItemGroup>
 
   <ItemGroup>

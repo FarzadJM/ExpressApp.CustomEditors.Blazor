@@ -1,26 +1,24 @@
 ﻿using DevExpress.Blazor;
 using DevExpress.ExpressApp.Blazor.Components.Models;
-using DevExpress.ExpressApp.Blazor.Editors;
-using DevExpress.ExpressApp.Blazor.Editors.Adapters;
 using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
 using System.ComponentModel;
 
 namespace ExpressApp.CustomEditors.Blazor;
 
-public class ExtendedTypePropertyEditor : TypePropertyEditor
+public class TypePropertyEditor : DevExpress.ExpressApp.Blazor.Editors.TypePropertyEditor
 {
     private readonly TypeConverter typeConverter;
 
-    public ExtendedTypePropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model)
+    public TypePropertyEditor(Type objectType, IModelMemberViewItem model) : base(objectType, model)
     {
         typeConverter = new CustomLocalizedClassInfoTypeConverter();
     }
 
-    protected override IComponentAdapter CreateComponentAdapter()
+    protected override DevExpress.ExpressApp.Blazor.Editors.Adapters.IComponentAdapter CreateComponentAdapter()
     {
-        DxComboBoxModel<DataItem<Type>, Type> dxComboBoxModel = new DxComboBoxModel<DataItem<Type>, Type>();
-        List<DataItem<Type>> list = new List<DataItem<Type>>();
+        var dxComboBoxModel = new DxComboBoxModel<DataItem<Type>, Type>();
+        var list = new List<DataItem<Type>>();
         foreach (Type item in typeConverter.GetStandardValues()!)
         {
             if (IsSuitableType(item))
@@ -33,7 +31,7 @@ public class ExtendedTypePropertyEditor : TypePropertyEditor
         dxComboBoxModel.ValueFieldName = "Value";
         dxComboBoxModel.TextFieldName = "Text";
         dxComboBoxModel.FilteringMode = DataGridFilteringMode.Contains;
-        return new DxComboBoxAdapter<DataItem<Type>, Type>(dxComboBoxModel);
+        return new DevExpress.ExpressApp.Blazor.Editors.Adapters.DxComboBoxAdapter<DataItem<Type>, Type>(dxComboBoxModel);
     }
 }
 
