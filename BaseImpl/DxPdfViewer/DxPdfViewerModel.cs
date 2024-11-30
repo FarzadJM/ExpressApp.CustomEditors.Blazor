@@ -9,4 +9,16 @@ public class DxPdfViewerModel : DxComponentModelBase
         get => GetPropertyValue<byte[]>();
         set => SetPropertyValue(value);
     }
+
+    public bool AllowDownload
+    {
+        get => GetPropertyValue<bool>();
+        set => SetPropertyValue(value);
+    }
+
+    public bool AllowPrint
+    {
+        get => GetPropertyValue<bool>();
+        set => SetPropertyValue(value);
+    }
 }

@@ -1,8 +1,10 @@
 ﻿@using DevExpress.Blazor.PdfViewer
+@using DevExpress.Blazor.Reporting.Models
 
 <DxPdfViewer @ref="dxPdfViewer"
              CssClass="@ComponentModel!.CssClass"
              IsSinglePagePreview="true"
+             CustomizeToolbar="@OnCustomizeToolbar"
              DocumentContent="@ComponentModel.DocumentContent" />
 
 @code {
@@ -12,4 +14,17 @@
     public DxPdfViewerModel? ComponentModel { get; set; }
 
     public static RenderFragment Create(DxPdfViewerModel componentModel) => @<DxPdfViewerRenderer ComponentModel=@componentModel />;
+
+    protected void OnCustomizeToolbar(ToolbarModel toolbarModel)
+    {
+        if (toolbarModel.AllItems.FirstOrDefault(i => i.Id == "Download") is IToolbarItem toolbarItemDownload)
+        {
+            toolbarItemDownload.GetEnabled = () => ComponentModel!.AllowDownload;
+        }
+
+        if (toolbarModel.AllItems.Where(i => i.Id == "Print").FirstOrDefault() is IToolbarItem toolbarItemPrint)
+        {
+            toolbarItemPrint.GetEnabled = () => ComponentModel!.AllowPrint;
+        }
+    }
 }
