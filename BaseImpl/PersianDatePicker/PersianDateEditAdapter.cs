@@ -15,16 +15,42 @@ public class PersianDateEditAdapter<T> : DxDateEditAdapter
 
     public PersianDateEditAdapter(DxDateEditModel<T> componentModel)
     {
-        if (componentModel == null)
+        ArgumentNullException.ThrowIfNull(componentModel, "componentModel");
+        ComponentModel = componentModel;
+        ComponentModel.DateChanged = EventCallback.Factory.Create((object)this, (Action<T>)ComponentModel_DateChanged);
+        Type type = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+        Type type2 = type;
+        if ((object)type2 == null)
         {
-            throw new ArgumentNullException("componentModel");
+            goto IL_00a1;
         }
 
-        ComponentModel = componentModel;
-        ComponentModel.DateChanged = EventCallback.Factory.Create(this, (Action<T>)ComponentModel_DateChanged);
+        ComponentModelBase componentModelBase;
+        if (type2 == typeof(DateOnly))
+        {
+            componentModelBase = base.DxDateEditMaskProperties.DateOnly;
+        }
+        else
+        {
+            Type type3 = type2;
+            if (!(type3 == typeof(DateTime)))
+            {
+                goto IL_00a1;
+            }
+
+            componentModelBase = base.DxDateEditMaskProperties.DateTime;
+        }
+
+        goto IL_00ae;
+    IL_00ae:
+        ComponentModelBase componentModelBase2 = componentModelBase;
         notifier = new Notifier(componentModel);
-        notifier.Subscribe(MaskProperties);
-        ComponentModel.MaskProperties = MaskProperties.GetComponentContent();
+        notifier.Subscribe(componentModelBase2);
+        ComponentModel.MaskProperties = componentModelBase2.GetComponentContent();
+        return;
+    IL_00a1:
+        componentModelBase = base.DxDateEditMaskProperties.DateTime;
+        goto IL_00ae;
     }
 
     private void ComponentModel_DateChanged(T date)
@@ -66,7 +92,7 @@ public class PersianDateEditAdapter<T> : DxDateEditAdapter
 
     public override void SetValue(object value)
     {
-        ComponentModel.Date = value == null ? default : (T)value;
+        ComponentModel.Date = ((value == null) ? default(T) : ((T)value));
     }
 
     protected override RenderFragment CreateComponent()

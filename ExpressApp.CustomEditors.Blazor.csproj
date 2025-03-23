@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="DevExpress.Blazor.PdfViewer" Version="24.1.7" />
-	<PackageReference Include="DevExpress.ExpressApp.Blazor" Version="24.1.7" />
-	<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
-	<PackageReference Include="Syncfusion.Blazor.SfPdfViewer" Version="26.1.35" />
-	<PackageReference Include="Syncfusion.Blazor.Themes" Version="26.1.35" />
+	<PackageReference Include="DevExpress.Blazor.PdfViewer" Version="24.2.5" />
+	<PackageReference Include="DevExpress.ExpressApp.Blazor" Version="24.2.5" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.10" />
+	<PackageReference Include="Syncfusion.Blazor.SfPdfViewer" Version="28.1.33" />
+	<PackageReference Include="Syncfusion.Blazor.Themes" Version="28.1.33" />
   </ItemGroup>
 
 </Project>

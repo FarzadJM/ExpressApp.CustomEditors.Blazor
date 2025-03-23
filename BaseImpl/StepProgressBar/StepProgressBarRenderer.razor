@@ -1,0 +1,79 @@
+﻿<div class="steps">
+    @for (int index = 0; index < Steps.Count; index++)
+    {
+        var id = @stepIdList[index];
+        <span id="@id" class="circle @GetStepStatus(index)" onclick="@(() => OpenFlyout(id))"></span>
+    }
+    <div class="progress-bar">
+        <span class="indicator" style="width: @GetIndicatorPercent()%"></span>
+    </div>
+</div>
+
+<DevExpress.Blazor.DxFlyout @bind-IsOpen="isOpen"
+                            Id="@dxFlyoutId"
+                            PositionTarget="@positionTarget"
+                            CloseMode="DevExpress.Blazor.FlyoutCloseMode.Close"
+                            CloseOnOutsideClick="true"
+                            PreventCloseOnPositionTargetClick="false"
+                            SizeMode="DevExpress.Blazor.SizeMode.Small"
+                            RestrictionMode="DevExpress.Blazor.FlyoutRestrictionMode.Page"
+                            BodyText="@bodyText">
+</DevExpress.Blazor.DxFlyout>
+
+@code {
+    [Parameter]
+    public int Value { get; set; }
+
+    [Parameter]
+    public List<string> Steps { get; set; } = default!;
+
+    private string dxFlyoutId = $"id{Guid.NewGuid().ToString().ToLower()}";
+    private bool isOpen = false;
+    private string bodyText = string.Empty;
+    private string positionTarget = string.Empty;
+    private List<string> stepIdList = new List<string>();
+
+    private void OpenFlyout(string stepId)
+    {
+        positionTarget = $"#{stepId}";
+        var index = stepIdList.IndexOf(stepId);
+        bodyText = Steps[index];
+        if (!string.IsNullOrWhiteSpace(bodyText))
+        {
+            isOpen = true;
+            StateHasChanged();
+        }
+    }
+
+    private int GetIndicatorPercent()
+    {
+        int segmentCount = Steps.Count - 1;
+        segmentCount = segmentCount < 0 ? 0 : segmentCount;
+        int width = Value * 100 / segmentCount;
+        width = width > 100 ? 100 : width;
+        return width;
+    }
+
+    private string GetStepStatus(int stepIndex)
+    {
+        return Value >= stepIndex ? "active" : string.Empty;
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (Steps is null || Steps.Count == 0)
+        {
+            Steps = new List<string>();
+
+            for (int index = 0; index < 10; index++)
+            {
+                Steps.Add(string.Empty);
+            }
+        }
+
+        Value = Value < 0 ? Steps.Count - 1 : Value;
+        stepIdList = new List<string>(Steps.Select(x => $"id{Guid.NewGuid().ToString().ToLower()}"));
+    }
+}
